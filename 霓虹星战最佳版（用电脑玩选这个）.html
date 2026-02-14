@@ -1638,7 +1638,10 @@
                             const dy = this.y - b.y;
                             const distance = Math.hypot(dx, dy);
                             if (distance < this.radius * 3) {
-                                const force = this.pullForce * (1 - distance / (this.radius * 3));
+                                // 散弹枪子弹受到更强的黑洞吸引力，干扰其轨迹
+                                const isSpread = b.type === 'spread';
+                                const pullMultiplier = isSpread ? 3.0 : 1.0; // 散弹子弹吸引力增强3倍
+                                const force = this.pullForce * pullMultiplier * (1 - distance / (this.radius * 3));
                                 b.vx += (dx / distance) * force;
                                 b.vy += (dy / distance) * force;
                             }
